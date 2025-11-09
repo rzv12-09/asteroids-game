@@ -50,8 +50,15 @@ class Ship {
             case "right":
                 this.x += this.speed;
         }
+        this.wrapAround();
     }
 
+    wrapAround() {
+        if(this.x < 0) this.x = canvas.width;
+        if(this.x > canvas.width) this.x = 0;
+        if(this.y < 0) this.y = canvas.height;
+        if(this.y > canvas.height) this.y = 0;
+    }
 }
 
 const ship = new Ship(canvas.width/2, canvas.height/2);
