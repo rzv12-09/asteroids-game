@@ -9,7 +9,7 @@ class Ship {
         this.x = x;
         this.y = y;
         this.angle = 0;
-        this.speed = 4;
+        this.speed = 8;
         this.size = 20;
     }
 
@@ -36,6 +36,22 @@ class Ship {
         if(direction === "right") this.angle += rotationSpeed;
     }
 
+    move(direction) {
+        switch(direction){
+            case "up":
+                this.y -= this.speed;
+                break;
+            case "down":
+                this.y += this.speed;
+                break;
+            case "left":
+                this.x -= this.speed;
+                break;
+            case "right":
+                this.x += this.speed;
+        }
+    }
+
 }
 
 const ship = new Ship(canvas.width/2, canvas.height/2);
@@ -55,7 +71,11 @@ function update(){
 
     if(keys["z"]) ship.rotate("left");
     if(keys["c"]) ship.rotate("right");
-    
+    if(keys["arrowup"]) ship.move("up");
+    if(keys["arrowdown"]) ship.move("down");
+    if(keys["arrowleft"]) ship.move("left");
+    if(keys["arrowright"]) ship.move("right");
+
     ship.draw();
 }
 
