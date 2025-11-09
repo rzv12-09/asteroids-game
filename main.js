@@ -30,7 +30,11 @@ class Ship {
         ctx.restore();
     }
 
-
+    rotate(direction){
+        const rotationSpeed = 0.1;
+        if(direction === "left") this.angle -= rotationSpeed;
+        if(direction === "right") this.angle += rotationSpeed;
+    }
 
 }
 
@@ -47,7 +51,11 @@ document.addEventListener("keyup",(e)=>{
 })
 
 function update(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
+    if(keys["z"]) ship.rotate("left");
+    if(keys["c"]) ship.rotate("right");
+    
     ship.draw();
 }
 
