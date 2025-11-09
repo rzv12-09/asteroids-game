@@ -29,11 +29,25 @@ class Ship {
         
         ctx.restore();
     }
+
+
+
 }
 
 const ship = new Ship(canvas.width/2, canvas.height/2);
 
+const keys = {};
+
+document.addEventListener("keydown",(e)=>{
+    keys[e.key.toLowerCase()] = true;
+})
+
+document.addEventListener("keyup",(e)=>{
+    keys[e.key.toLowerCase()] = false;
+})
+
 function update(){
+
     ship.draw();
 }
 
