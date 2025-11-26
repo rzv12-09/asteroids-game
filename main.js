@@ -110,7 +110,6 @@ class Asteroid {
   }
 }
 
-
 const ship = new Ship(canvas.width/2, canvas.height/2);
 
 const keys = {};
@@ -122,6 +121,14 @@ document.addEventListener("keydown",(e)=>{
 document.addEventListener("keyup",(e)=>{
     keys[e.key.toLowerCase()] = false;
 })
+
+const asteroids = [];
+
+for (let i = 0; i < 5; i++) {
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height;
+  asteroids.push(new Asteroid(x, y));
+}
 
 function update(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
