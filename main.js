@@ -9,7 +9,7 @@ class Ship {
         this.x = x;
         this.y = y;
         this.angle = 0;
-        this.speed = 8;
+        this.speed = 4;
         this.size = 20;
     }
 
@@ -31,7 +31,7 @@ class Ship {
     }
 
     rotate(direction){
-        const rotationSpeed = 0.1;
+        const rotationSpeed = 0.04;
         if(direction === "left") this.angle -= rotationSpeed;
         if(direction === "right") this.angle += rotationSpeed;
     }
