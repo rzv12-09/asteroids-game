@@ -61,6 +61,56 @@ class Ship {
     }
 }
 
+class Asteroid {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.level = Math.floor(Math.random() * 4) + 1; // 1–4
+    this.radius = this.level * 15; // dimensiunea depinde de nivel
+    this.color = this.getColor();
+    this.speed = Math.random() * 2 + 1; // 1–3 px/frame
+    this.angle = Math.random() * Math.PI * 2;
+    this.dx = Math.cos(this.angle) * this.speed;
+    this.dy = Math.sin(this.angle) * this.speed;
+  }
+
+  getColor() {
+    switch (this.level) {
+      case 1: return "lightgray";
+      case 2: return "silver";
+      case 3: return "darkgray";
+      case 4: return "dimgray";
+    }
+  }
+
+  draw(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.closePath();
+
+    // text cu nivelul
+    ctx.fillStyle = "white";
+    ctx.font = "16px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(this.level, this.x, this.y);
+  }
+
+  update(canvas) {
+    this.x += this.dx;
+    this.y += this.dy;
+
+    // dacă iese din ecran, reapare pe partea opusă
+    if (this.x < 0) this.x = canvas.width;
+    if (this.x > canvas.width) this.x = 0;
+    if (this.y < 0) this.y = canvas.height;
+    if (this.y > canvas.height) this.y = 0;
+  }
+}
+
+
 const ship = new Ship(canvas.width/2, canvas.height/2);
 
 const keys = {};
