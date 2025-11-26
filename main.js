@@ -74,14 +74,14 @@ class Asteroid {
     this.dy = Math.sin(this.angle) * this.speed;
   }
 
-  getColor() {
-    switch (this.level) {
-      case 1: return "lightgray";
-      case 2: return "silver";
-      case 3: return "darkgray";
-      case 4: return "dimgray";
-    }
+ getColor() {
+  switch (this.level) {
+    case 1: return "#4CAF50"; // verde intens
+    case 2: return "#FFEB3B"; // galben puternic
+    case 3: return "#FF9800"; // portocaliu aprins
+    case 4: return "#F44336"; // roșu intens
   }
+}
 
   draw(ctx) {
     ctx.beginPath();
@@ -92,7 +92,7 @@ class Asteroid {
 
     // text cu nivelul
     ctx.fillStyle = "white";
-    ctx.font = "16px Arial";
+    ctx.font = "20px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(this.level, this.x, this.y);
@@ -146,6 +146,6 @@ function update(){
     asteroid.update(canvas);
     asteroid.draw(ctx);
   });
+  requestAnimationFrame(update)
 }
-
-setInterval(update,16);
+update()
