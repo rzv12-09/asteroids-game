@@ -141,6 +141,11 @@ function update(){
     if(keys["arrowright"]) ship.move("right");
 
     ship.draw();
+
+     asteroids.forEach(asteroid => {
+    asteroid.update(canvas);
+    asteroid.draw(ctx);
+  });
 }
 
 setInterval(update,16);
