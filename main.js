@@ -155,11 +155,33 @@ document.addEventListener("keyup",(e)=>{
     keys[e.key.toLowerCase()] = false;
 })
 
+
+
 const asteroids = [];
 const rockets = [];
 
 let lastShotTime = 0;
 const shotCooldown = 300; // milisecunde
+
+let lives = 3;
+
+function resetGame() {
+    // Resetăm nava
+    ship.x = canvas.width / 2;
+    ship.y = canvas.height / 2;
+    ship.angle = 0;
+
+    // Resetăm asteroizi
+    asteroids.length = 0;
+    for (let i = 0; i < 5; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        asteroids.push(new Asteroid(x, y));
+    }
+
+    // Resetăm rachete
+    rockets.length = 0;
+}
 
 
 function shootRocket() {
