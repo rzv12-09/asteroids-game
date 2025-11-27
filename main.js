@@ -181,6 +181,10 @@ function resetGame() {
 
     // Resetăm rachete
     rockets.length = 0;
+
+    for(let key in keys){
+        keys[key] = false;
+    }
 }
 
 
@@ -200,6 +204,7 @@ function shootRocket() {
     const noseY = ship.y + Math.sin(angle) * ship.size;
 
     rockets.push(new Rocket(noseX, noseY, ship.angle));
+    
 }
 
 function checkCollisions() {
