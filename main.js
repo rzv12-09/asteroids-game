@@ -4,6 +4,8 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+
+
 class Ship {
     constructor (x,y){
         this.x = x;
@@ -68,7 +70,7 @@ class Asteroid {
     this.level = Math.floor(Math.random() * 4) + 1; // 1–4
     this.radius = this.level * 15; // dimensiunea depinde de nivel
     this.color = this.getColor();
-    this.speed = Math.random() * 2 + 1; // 1–3 px/frame
+    this.speed = Math.random() * 2; // 1–3 px/frame
     this.angle = Math.random() * Math.PI * 2;
     this.dx = Math.cos(this.angle) * this.speed;
     this.dy = Math.sin(this.angle) * this.speed;
@@ -108,6 +110,37 @@ class Asteroid {
     if (this.y < 0) this.y = canvas.height;
     if (this.y > canvas.height) this.y = 0;
   }
+}
+
+class Rocket {
+    constructor(x, y, angle) {
+        this.x = x;
+        this.y = y;
+        this.angle = angle;
+        this.speed = 7;
+        this.size = 4; 
+        this.dx = Math.cos(angle) * this.speed;
+        this.dy = Math.sin(angle) * this.speed;
+    }
+
+    update() {
+        this.x += this.dx;
+        this.y += this.dy;
+    }
+
+    draw() {
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    isOffScreen() {
+        return (
+            this.x < 0 || this.x > canvas.width ||
+            this.y < 0 || this.y > canvas.height
+        );
+    }
 }
 
 const ship = new Ship(canvas.width/2, canvas.height/2);
