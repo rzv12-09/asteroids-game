@@ -116,12 +116,12 @@ class Rocket {
     constructor(x, y, angle) {
         this.x = x;
         this.y = y;
-        this.angle = angle;
+        this.angle = angle - Math.PI/2;
         this.speed = 7;
         this.size = 4; 
-        this.dx = Math.cos(angle) * this.speed;
-        this.dy = Math.sin(angle) * this.speed;
-    }
+        this.dx = Math.cos(this.angle) * this.speed;
+        this.dy = Math.sin(this.angle) * this.speed;
+    }x
 
     update() {
         this.x += this.dx;
@@ -131,7 +131,7 @@ class Rocket {
     draw() {
         ctx.fillStyle = "red";
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI *2);
         ctx.fill();
     }
 
@@ -156,6 +156,20 @@ document.addEventListener("keyup",(e)=>{
 })
 
 const asteroids = [];
+const rockets = [];
+
+
+
+function shootRocket() {
+    if (rockets.length >= 3) return; // maxim 3 rachete simultan
+    const angle =ship.angle - Math.PI/2;
+    const noseX = ship.x + Math.cos(angle) * ship.size;
+    const noseY = ship.y + Math.sin(angle) * ship.size;
+
+    rockets.push(new Rocket(noseX, noseY, ship.angle));
+}
+
+
 
 for (let i = 0; i < 5; i++) {
   const x = Math.random() * canvas.width;
@@ -172,6 +186,7 @@ function update(){
     if(keys["arrowdown"]) ship.move("down");
     if(keys["arrowleft"]) ship.move("left");
     if(keys["arrowright"]) ship.move("right");
+    if (keys["x"]) shootRocket();
 
     ship.draw();
 
@@ -179,6 +194,14 @@ function update(){
     asteroid.update(canvas);
     asteroid.draw(ctx);
   });
+   rockets.forEach((rocket, index) => {
+        rocket.update();
+        rocket.draw();
+
+        if (rocket.isOffScreen()) {
+            rockets.splice(index, 1);
+        }
+    });
   requestAnimationFrame(update)
 }
 update()
