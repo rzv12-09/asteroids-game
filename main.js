@@ -180,6 +180,29 @@ function shootRocket() {
     rockets.push(new Rocket(noseX, noseY, ship.angle));
 }
 
+function checkCollisions() {
+    rockets.forEach((rocket, rIndex) => {
+        asteroids.forEach((ast, aIndex) => {
+
+            const dist = Math.hypot(rocket.x - ast.x, rocket.y - ast.y);
+
+            if (dist < ast.radius) {
+                // lovit!
+                ast.level--;
+
+                if (ast.level <= 0) {
+                    asteroids.splice(aIndex, 1); // asteroid distrus
+                } else {
+                    ast.radius = ast.level * 15; // actualizare dimensiune
+                    ast.color = ast.getColor();  // actualizare culoare
+                }
+
+                rockets.splice(rIndex, 1); // racheta dispare
+            }
+        });
+    });
+}
+
 
 
 for (let i = 0; i < 5; i++) {
@@ -213,6 +236,7 @@ function update(){
             rockets.splice(index, 1);
         }
     });
+    checkCollisions();
   requestAnimationFrame(update)
 }
 update()
