@@ -158,11 +158,22 @@ document.addEventListener("keyup",(e)=>{
 const asteroids = [];
 const rockets = [];
 
+let lastShotTime = 0;
+const shotCooldown = 300; // milisecunde
 
 
 function shootRocket() {
-    if (rockets.length >= 3) return; // maxim 3 rachete simultan
-    const angle =ship.angle - Math.PI/2;
+    const now = Date.now();
+
+    // dacă nu a trecut cooldown-ul, nu trage
+    if (now - lastShotTime < shotCooldown) return;
+
+    // dacă sunt deja 3 rachete pe ecran, nu trage
+    if (rockets.length >= 3) return;
+
+    lastShotTime = now; // actualizăm momentul tragerii
+
+    const angle = ship.angle - Math.PI/2;
     const noseX = ship.x + Math.cos(angle) * ship.size;
     const noseY = ship.y + Math.sin(angle) * ship.size;
 
