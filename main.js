@@ -233,6 +233,30 @@ for (let i = 0; i < 5; i++) {
   asteroids.push(new Asteroid(x, y));
 }
 
+function checkShipCollision() {
+    for (let ast of asteroids) {
+        
+        // distanța dintre navă și asteroid
+        const dist = Math.hypot(ship.x - ast.x, ship.y - ast.y);
+
+        // coliziune dacă distanța < raza asteroidului + mărimea navei
+        if (dist < ast.radius + ship.size) {
+            lives--;
+
+            console.log("Coliziune! Vieți rămase:", lives);
+
+            if (lives <= 0) {
+                alert("GAME OVER");
+                lives = 3; // reîncep jocul
+            }
+
+            resetGame();
+            return;
+        }
+    }
+}
+
+
 function update(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -259,6 +283,8 @@ function update(){
         }
     });
     checkCollisions();
+    checkShipCollision();
+
   requestAnimationFrame(update)
 }
 update()
