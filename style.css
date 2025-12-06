@@ -56,3 +56,9 @@ button {
 button:hover {
   background-color: #ccc;
 }
+#score {
+    font-size: 30px;
+    font-weight: bold;
+    color: #FFEB3B; /* Galben */
+    margin: 10px 0;
+}

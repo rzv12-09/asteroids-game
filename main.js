@@ -6,7 +6,9 @@ const startBtn = document.getElementById("startBtn");
 const userScoreDiv = document.getElementById("user-score");
 const saveScoreBtn = document.getElementById("saveScore");
 const nameInput = userScoreDiv.querySelector("input");
+const finalScoreText = document.getElementById("score");
 
+let score = 0;
 let animationId;
 
 canvas.width = window.innerWidth;
@@ -224,7 +226,9 @@ function checkCollisions() {
 
             if (dist < ast.radius) {
                 // lovit!
+                const currentLevel = ast.level;
                 ast.level--;
+                score += currentLevel * 10;
 
                 if (ast.level <= 0) {
                     asteroids.splice(aIndex, 1); // asteroid distrus
@@ -273,6 +277,7 @@ function checkShipCollision() {
 
 function gameOver(){
     cancelAnimationFrame(animationId);
+    finalScoreText.innerText = "Final Score: " + score; 
     userScoreDiv.style.display = "flex";
 }
 
@@ -284,6 +289,14 @@ function drawLives() {
     ctx.fillText("Lives: " + lives, 20, 20);
 }
 
+function drawScore() {
+    ctx.fillStyle = "white";
+    ctx.font = "24px Arial";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    // Scorul va fi afișat sub vieți, la y=50
+    ctx.fillText("Score: " + score, 20, 50); 
+}
 
 function update(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -313,6 +326,7 @@ function update(){
     checkCollisions();
     checkShipCollision();
     drawLives();
+    drawScore();
     if (lives > 0){
     animationId = requestAnimationFrame(update)
     }
@@ -328,12 +342,13 @@ startBtn.addEventListener("click", () => {
 saveScoreBtn.addEventListener("click", () => {
     const playerName = nameInput.value;
     console.log("Nume salvat:", playerName); 
-    // AICI vei implementa logica de salvare în localStorage mai târziu
+
 
     // Ascundem fereastra de input
     userScoreDiv.style.display = "none";
     
     // Resetăm totul pentru un joc nou
+    score = 0;
     lives = 3;
     resetGame();
     
