@@ -21,3 +21,38 @@ body {
   transform: translate(-50%, -50%);
   text-align: center;
 }
+
+#user-score {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8); /* Fundal semitransparent */
+  padding: 20px;
+  border: 2px solid white;
+  border-radius: 10px;
+  gap: 10px; /* Spațiu între elemente */
+  z-index: 10; /* Să fie peste canvas */
+}
+
+input[type="text"] {
+  padding: 5px;
+  font-size: 18px;
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: white;
+  border: none;
+  font-family: monospace;
+}
+
+button:hover {
+  background-color: #ccc;
+}

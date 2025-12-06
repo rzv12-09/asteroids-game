@@ -3,6 +3,12 @@ const ctx = canvas.getContext("2d");
 const menu = document.getElementById("menu");
 const startBtn = document.getElementById("startBtn");
 
+const userScoreDiv = document.getElementById("user-score");
+const saveScoreBtn = document.getElementById("saveScore");
+const nameInput = userScoreDiv.querySelector("input");
+
+let animationId;
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -167,6 +173,7 @@ const shotCooldown = 300; // milisecunde
 
 let lives = 3;
 
+
 function resetGame() {
     // Resetăm nava
     ship.x = canvas.width / 2;
@@ -240,6 +247,8 @@ for (let i = 0; i < 5; i++) {
   asteroids.push(new Asteroid(x, y));
 }
 
+
+
 function checkShipCollision() {
     for (let ast of asteroids) {
         
@@ -253,14 +262,18 @@ function checkShipCollision() {
             console.log("Coliziune! Vieți rămase:", lives);
 
             if (lives <= 0) {
-                alert("GAME OVER");
-                lives = 3; // reîncep jocul
+                gameOver();
+            }else{
+                resetGame();
             }
-
-            resetGame();
             return;
         }
     }
+}
+
+function gameOver(){
+    cancelAnimationFrame(animationId);
+    userScoreDiv.style.display = "flex";
 }
 
 function drawLives() {
@@ -300,14 +313,34 @@ function update(){
     checkCollisions();
     checkShipCollision();
     drawLives();
-
-  requestAnimationFrame(update)
+    if (lives > 0){
+    animationId = requestAnimationFrame(update)
+    }
 }
 
 startBtn.addEventListener("click", () => {
     menu.style.display = "none";      // ascunde meniul
     canvas.style.display = "block";   // arată canvasul
     update();
-    // startGame();
+
 });
-// update()
+
+saveScoreBtn.addEventListener("click", () => {
+    const playerName = nameInput.value;
+    console.log("Nume salvat:", playerName); 
+    // AICI vei implementa logica de salvare în localStorage mai târziu
+
+    // Ascundem fereastra de input
+    userScoreDiv.style.display = "none";
+    
+    // Resetăm totul pentru un joc nou
+    lives = 3;
+    resetGame();
+    
+    // Afișăm meniul principal
+    menu.style.display = "flex";
+    canvas.style.display = "none";
+    
+    // Curățăm inputul
+    nameInput.value = "";
+});
