@@ -286,7 +286,7 @@ function drawLives() {
     ctx.font = "24px Arial";
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    ctx.fillText("Lives: " + lives, 20, 20);
+    ctx.fillText("Lives: " + "❤".repeat(lives), 20, 20);
 }
 
 function drawScore() {
