@@ -1,10 +1,23 @@
 body {
-padding: 0;
+  font-size: 24px;
+  font-family: monospace;
+  color: white;
+  padding: 0;
   margin: 0;
   overflow: hidden;
   background-color: black;
 }
 
-canvas {
-  display: block;
+#gameCanvas {
+        display: none;
+}
+
+#menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }

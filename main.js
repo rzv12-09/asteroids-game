@@ -1,5 +1,7 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const menu = document.getElementById("menu");
+const startBtn = document.getElementById("startBtn");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -87,7 +89,7 @@ class Asteroid {
 
   draw(ctx) {
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI *2 );
     ctx.fillStyle = this.color;
     ctx.fill();
     ctx.closePath();
@@ -261,6 +263,14 @@ function checkShipCollision() {
     }
 }
 
+function drawLives() {
+    ctx.fillStyle = "white";
+    ctx.font = "24px Arial";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText("Lives: " + lives, 20, 20);
+}
+
 
 function update(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -289,7 +299,15 @@ function update(){
     });
     checkCollisions();
     checkShipCollision();
+    drawLives();
 
   requestAnimationFrame(update)
 }
-update()
+
+startBtn.addEventListener("click", () => {
+    menu.style.display = "none";      // ascunde meniul
+    canvas.style.display = "block";   // arată canvasul
+    update();
+    // startGame();
+});
+// update()
