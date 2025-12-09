@@ -62,3 +62,33 @@ button:hover {
     color: #FFEB3B; /* Galben */
     margin: 10px 0;
 }
+
+#high-scores {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 30px;
+  border: 2px solid #FFEB3B; /* Bordură galbenă */
+  border-radius: 10px;
+  z-index: 20;
+  min-width: 300px;
+}
+
+#highScoresList {
+  list-style-position: inside;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left; /* Numele să fie aliniate frumos */
+}
+
+#highScoresList li {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #555;
+  display: flex;
+  justify-content: space-between;
+}

@@ -8,6 +8,14 @@ const saveScoreBtn = document.getElementById("saveScore");
 const nameInput = userScoreDiv.querySelector("input");
 const finalScoreText = document.getElementById("score");
 
+
+const highScoresBtn = document.getElementById("scores");
+const highScoresScreen = document.getElementById("high-scores");
+const highScoresList = document.getElementById("highScoresList");
+const closeScoresBtn = document.getElementById("closeScoresBtn");
+
+const HIGH_SCORES_KEY = 'asteroidsHighScores';
+
 let score = 0;
 let animationId;
 
@@ -339,23 +347,69 @@ startBtn.addEventListener("click", () => {
 
 });
 
+function saveHighScore(name, score) {
+    // 1. Citim scorurile existente (sau array gol dacă nu există)
+    const highScores = JSON.parse(localStorage.getItem(HIGH_SCORES_KEY)) || [];
+
+    // 2. Adăugăm scorul curent
+    const newScore = { name: name, score: score };
+    highScores.push(newScore);
+
+    // 3. Sortăm descrescător după scor
+    highScores.sort((a, b) => b.score - a.score);
+
+    // 4. Păstrăm doar primele 5
+    highScores.splice(5);
+
+    // 5. Salvăm înapoi în localStorage
+    localStorage.setItem('asteroidsHighScores', JSON.stringify(highScores));
+}
+
 saveScoreBtn.addEventListener("click", () => {
-    const playerName = nameInput.value;
-    console.log("Nume salvat:", playerName); 
+   const playerName = nameInput.value || "Anonymous"; // Nume default
+    
+    // 1. SALVARE SCOR
+    saveHighScore(playerName, score);
 
-
-    // Ascundem fereastra de input
+    // 2. Ascundem fereastra de input
     userScoreDiv.style.display = "none";
     
-    // Resetăm totul pentru un joc nou
-    score = 0;
+    // 3. Resetăm variabilele
+    score = 0; 
     lives = 3;
     resetGame();
     
-    // Afișăm meniul principal
-    menu.style.display = "flex";
+    // 4. Revenim la meniul principal
     canvas.style.display = "none";
-    
-    // Curățăm inputul
+    menu.style.display = "flex";
     nameInput.value = "";
+});
+
+function showHighScores() {
+    // Citim scorurile
+    const highScores = JSON.parse(localStorage.getItem(`asteroidsHighScores`)) || [];
+    
+    // Golim lista veche
+    highScoresList.innerHTML = "";
+
+    // Creăm elementele HTML (li)
+    highScores.forEach((scoreObj) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span>${scoreObj.name}</span> <span>${scoreObj.score}</span>`;
+        highScoresList.appendChild(li);
+    });
+}
+
+
+// Handler pentru butonul "High scores" din meniul principal
+highScoresBtn.addEventListener("click", () => {
+    menu.style.display = "none";
+    highScoresScreen.style.display = "flex";
+    showHighScores(); // Populăm lista
+});
+
+// Handler pentru butonul "Back to Menu"
+closeScoresBtn.addEventListener("click", () => {
+    highScoresScreen.style.display = "none";
+    menu.style.display = "flex";
 });
