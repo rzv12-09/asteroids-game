@@ -1,21 +1,11 @@
-# 🚀 Asteroids Game (Browser Edition)
+# 🚀 Asteroids JS
 
-A modern remake of the classic **Asteroids** arcade game, built with **HTML5 Canvas** and **vanilla JavaScript**.  
-Control your spaceship, dodge asteroids, and destroy them to score as many points as possible! 💥
+A lightweight remake of the classic arcade shooter built with **Vanilla JavaScript** and **HTML5 Canvas**.
 
----
+## 🎮 [Play Live Demo](https://rzv12-09.github.io/asteroids-game)
 
-## 🎮 Features
-
-- 🛸 Smooth ship controls:
-  - `←` / `→` – rotate the ship  
-  - `↑` – accelerate  
-  - `Space` – shoot
-- 🌌 Screen wrapping (fly off one edge and reappear on the opposite side)
-- ☄️ Randomly moving asteroids that split into smaller pieces when destroyed
-- 💣 Collision detection (ship ↔ asteroid, bullet ↔ asteroid)
-- 🧮 Score and lives system
-- 🎵 Simple sound effects (optional)
-- ⚙️ Built entirely with **HTML, CSS, and JavaScript** – no frameworks
-
----
+### ✨ Features
+- **Infinite Waves:** Difficulty increases as you clear asteroids.
+- **High Scores:** Top 5 scores saved via Local Storage.
+- **Regeneration:** Earn an extra life (❤) every 500 points.
+- **Mobile Ready:** On-screen touch controls for phones/tablets.
