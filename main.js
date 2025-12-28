@@ -404,13 +404,11 @@ closeScoresBtn.addEventListener("click", () => {
 function addTouchListener(btnId, keyName) {
     const btn = document.getElementById(btnId);
     
-    // Când atingi ecranul
     btn.addEventListener("touchstart", (e) => {
-        e.preventDefault(); // Previne scroll-ul sau zoom-ul
+        e.preventDefault(); 
         keys[keyName] = true;
     }, { passive: false });
 
-    // Când ridici degetul
     btn.addEventListener("touchend", (e) => {
         e.preventDefault();
         keys[keyName] = false;
