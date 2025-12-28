@@ -399,3 +399,29 @@ closeScoresBtn.addEventListener("click", () => {
     highScoresScreen.style.display = "none";
     menu.style.display = "flex";
 });
+
+//logica touchscreen
+function addTouchListener(btnId, keyName) {
+    const btn = document.getElementById(btnId);
+    
+    // Când atingi ecranul
+    btn.addEventListener("touchstart", (e) => {
+        e.preventDefault(); // Previne scroll-ul sau zoom-ul
+        keys[keyName] = true;
+    }, { passive: false });
+
+    // Când ridici degetul
+    btn.addEventListener("touchend", (e) => {
+        e.preventDefault();
+        keys[keyName] = false;
+    }, { passive: false });
+}
+
+addTouchListener("btn-up", "arrowup");
+addTouchListener("btn-down", "arrowdown");
+addTouchListener("btn-left", "arrowleft");
+addTouchListener("btn-right", "arrowright");
+
+addTouchListener("btn-rot-left", "z");   
+addTouchListener("btn-rot-right", "c");
+addTouchListener("btn-shoot", "x");
