@@ -16,8 +16,12 @@ const closeScoresBtn = document.getElementById("closeScoresBtn");
 
 const HIGH_SCORES_KEY = 'asteroidsHighScores';
 
+let gameLevel = 1;
 let score = 0;
 let animationId;
+
+const POINTS_FOR_EXTRA_LIFE = 500;
+let nextLifePointsLimit = POINTS_FOR_EXTRA_LIFE;
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -85,10 +89,10 @@ class Asteroid {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.level = Math.floor(Math.random() * 4) + 1; // 1–4
-    this.radius = this.level * 15; // dimensiunea depinde de nivel
+    this.level = Math.floor(Math.random() * 4) + 1; 
+    this.radius = this.level * 15;
     this.color = this.getColor();
-    this.speed = Math.random() * 2; // 1–3 px/frame
+    this.speed = Math.random() * 2;
     this.angle = Math.random() * Math.PI * 2;
     this.dx = Math.cos(this.angle) * this.speed;
     this.dy = Math.sin(this.angle) * this.speed;
@@ -96,10 +100,10 @@ class Asteroid {
 
  getColor() {
   switch (this.level) {
-    case 1: return "#4CAF50"; // verde intens
-    case 2: return "#FFEB3B"; // galben puternic
-    case 3: return "#FF9800"; // portocaliu aprins
-    case 4: return "#F44336"; // roșu intens
+    case 1: return "#4CAF50"; 
+    case 2: return "#FFEB3B"; 
+    case 3: return "#FF9800"; 
+    case 4: return "#F44336"; 
   }
 }
 
@@ -110,7 +114,7 @@ class Asteroid {
     ctx.fill();
     ctx.closePath();
 
-    // text cu nivelul
+    //asteroid lvl text
     ctx.fillStyle = "white";
     ctx.font = "20px Arial";
     ctx.textAlign = "center";
@@ -122,7 +126,7 @@ class Asteroid {
     this.x += this.dx;
     this.y += this.dy;
 
-    // dacă iese din ecran, reapare pe partea opusă
+    //wrap around
     if (this.x < 0) this.x = canvas.width;
     if (this.x > canvas.width) this.x = 0;
     if (this.y < 0) this.y = canvas.height;
@@ -179,27 +183,23 @@ const asteroids = [];
 const rockets = [];
 
 let lastShotTime = 0;
-const shotCooldown = 300; // milisecunde
+const shotCooldown = 300;
 
 let lives = 3;
 
 
 function resetGame() {
-    // Resetăm nava
     ship.x = canvas.width / 2;
     ship.y = canvas.height / 2;
     ship.angle = 0;
+    ship.dx = 0;
+    ship.dy = 0;
 
-    // Resetăm asteroizi
     asteroids.length = 0;
-    for (let i = 0; i < 5; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        asteroids.push(new Asteroid(x, y));
-    }
-
-    // Resetăm rachete
     rockets.length = 0;
+    
+    gameLevel = 1;
+    createAsteroids(5);
 
     for(let key in keys){
         keys[key] = false;
@@ -210,20 +210,16 @@ function resetGame() {
 function shootRocket() {
     const now = Date.now();
 
-    // dacă nu a trecut cooldown-ul, nu trage
     if (now - lastShotTime < shotCooldown) return;
 
-    // dacă sunt deja 3 rachete pe ecran, nu trage
     if (rockets.length >= 3) return;
-
-    lastShotTime = now; // actualizăm momentul tragerii
+    lastShotTime = now;
 
     const angle = ship.angle - Math.PI/2;
     const noseX = ship.x + Math.cos(angle) * ship.size;
     const noseY = ship.y + Math.sin(angle) * ship.size;
 
     rockets.push(new Rocket(noseX, noseY, ship.angle));
-    
 }
 
 function checkCollisions() {
@@ -233,46 +229,52 @@ function checkCollisions() {
             const dist = Math.hypot(rocket.x - ast.x, rocket.y - ast.y);
 
             if (dist < ast.radius) {
-                // lovit!
+               
                 const currentLevel = ast.level;
                 ast.level--;
                 score += currentLevel * 10;
 
-                if (ast.level <= 0) {
-                    asteroids.splice(aIndex, 1); // asteroid distrus
-                } else {
-                    ast.radius = ast.level * 15; // actualizare dimensiune
-                    ast.color = ast.getColor();  // actualizare culoare
+                if( score >= nextLifePointsLimit){
+                    lives++;
+                    nextLifePointsLimit += POINTS_FOR_EXTRA_LIFE;
                 }
 
-                rockets.splice(rIndex, 1); // racheta dispare
+                if (ast.level <= 0) {
+                    asteroids.splice(aIndex, 1);
+                } else {
+                    ast.radius = ast.level * 15;
+                    ast.color = ast.getColor();
+                }
+                rockets.splice(rIndex, 1); 
             }
         });
     });
 }
 
 
+function createAsteroids(number) {
+    for (let i = 0; i < number; i++) {
+        let x, y;
+        let dist;
+        const safeZone = 150;
 
-for (let i = 0; i < 5; i++) {
-  const x = Math.random() * canvas.width;
-  const y = Math.random() * canvas.height;
-  asteroids.push(new Asteroid(x, y));
+        do {
+            x = Math.random() * canvas.width;
+            y = Math.random() * canvas.height;
+            dist = Math.hypot(ship.x - x, ship.y - y);
+        } while (dist < safeZone);
+
+        asteroids.push(new Asteroid(x, y));
+    }
 }
-
 
 
 function checkShipCollision() {
     for (let ast of asteroids) {
-        
-        // distanța dintre navă și asteroid
         const dist = Math.hypot(ship.x - ast.x, ship.y - ast.y);
 
-        // coliziune dacă distanța < raza asteroidului + mărimea navei
         if (dist < ast.radius + ship.size) {
             lives--;
-
-            console.log("Coliziune! Vieți rămase:", lives);
-
             if (lives <= 0) {
                 gameOver();
             }else{
@@ -302,12 +304,17 @@ function drawScore() {
     ctx.font = "24px Arial";
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    // Scorul va fi afișat sub vieți, la y=50
     ctx.fillText("Score: " + score, 20, 50); 
 }
 
 function update(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    if (asteroids.length === 0) {
+        gameLevel++;
+        createAsteroids(5 + gameLevel); 
+    }
+
 
     if(keys["z"]) ship.rotate("left");
     if(keys["c"]) ship.rotate("right");
@@ -335,64 +342,46 @@ function update(){
     checkShipCollision();
     drawLives();
     drawScore();
+
     if (lives > 0){
     animationId = requestAnimationFrame(update)
     }
 }
 
 startBtn.addEventListener("click", () => {
-    menu.style.display = "none";      // ascunde meniul
-    canvas.style.display = "block";   // arată canvasul
-    update();
+    menu.style.display = "none";  
+    canvas.style.display = "block";
 
+    resetGame();
+    update();
 });
 
 function saveHighScore(name, score) {
-    // 1. Citim scorurile existente (sau array gol dacă nu există)
     const highScores = JSON.parse(localStorage.getItem(HIGH_SCORES_KEY)) || [];
-
-    // 2. Adăugăm scorul curent
     const newScore = { name: name, score: score };
     highScores.push(newScore);
-
-    // 3. Sortăm descrescător după scor
     highScores.sort((a, b) => b.score - a.score);
-
-    // 4. Păstrăm doar primele 5
     highScores.splice(5);
-
-    // 5. Salvăm înapoi în localStorage
-    localStorage.setItem('asteroidsHighScores', JSON.stringify(highScores));
+    localStorage.setItem(HIGH_SCORES_KEY, JSON.stringify(highScores));
 }
 
 saveScoreBtn.addEventListener("click", () => {
-   const playerName = nameInput.value || "Anonymous"; // Nume default
-    
-    // 1. SALVARE SCOR
+   const playerName = nameInput.value || "Anonymous";
     saveHighScore(playerName, score);
-
-    // 2. Ascundem fereastra de input
     userScoreDiv.style.display = "none";
-    
-    // 3. Resetăm variabilele
     score = 0; 
     lives = 3;
     resetGame();
     
-    // 4. Revenim la meniul principal
+    nextLifePointsLimit = POINTS_FOR_EXTRA_LIFE;
     canvas.style.display = "none";
     menu.style.display = "flex";
     nameInput.value = "";
 });
 
 function showHighScores() {
-    // Citim scorurile
-    const highScores = JSON.parse(localStorage.getItem(`asteroidsHighScores`)) || [];
-    
-    // Golim lista veche
+    const highScores = JSON.parse(localStorage.getItem(HIGH_SCORES_KEY)) || [];
     highScoresList.innerHTML = "";
-
-    // Creăm elementele HTML (li)
     highScores.forEach((scoreObj) => {
         const li = document.createElement("li");
         li.innerHTML = `<span>${scoreObj.name}</span> <span>${scoreObj.score}</span>`;
@@ -400,15 +389,12 @@ function showHighScores() {
     });
 }
 
-
-// Handler pentru butonul "High scores" din meniul principal
 highScoresBtn.addEventListener("click", () => {
     menu.style.display = "none";
     highScoresScreen.style.display = "flex";
-    showHighScores(); // Populăm lista
+    showHighScores();
 });
 
-// Handler pentru butonul "Back to Menu"
 closeScoresBtn.addEventListener("click", () => {
     highScoresScreen.style.display = "none";
     menu.style.display = "flex";
