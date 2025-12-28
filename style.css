@@ -165,32 +165,44 @@ button:hover {
 
 
 @media (max-width: 600px) {
-    
+    body {
+        font-size: 16px; 
+    }
+
     #high-scores, #user-score {
-        width: 85%;          
-        min-width: auto;
-        padding: 15px;   
-        border-width: 1px;
+        width: 90%;  
+        max-width: 320px;
+        min-width: 0;
+        padding: 15px;
+        gap: 5px;
     }
 
     #high-scores h1, #user-score div:first-child {
-        font-size: 22px;
+        font-size: 20px;
+        margin: 5px 0 10px 0;
+    }
+
+    #highScoresList {
         margin: 10px 0;
     }
 
     #highScoresList li {
-        font-size: 16px;   
-        padding: 5px;
-        margin-bottom: 5px;
+        font-size: 14px;
+        padding: 4px 0;
+        margin-bottom: 4px;
     }
 
     button {
-        font-size: 16px;
-        padding: 8px 16px;
+        font-size: 14px;
+        padding: 8px 15px;
+        width: 100%;
     }
 
+
     input[type="text"] {
-        width: 80%;
+        width: 100%;
+        box-sizing: border-box;
         font-size: 16px;
+        margin-bottom: 10px;
     }
 }
