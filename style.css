@@ -92,3 +92,72 @@ button:hover {
   display: flex;
   justify-content: space-between;
 }
+
+/* ... css-ul tău existent ... */
+
+/* Containerul principal pentru controale */
+#mobile-controls {
+    display: flex;
+    justify-content: space-between; /* Stânga și Dreapta */
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 5; /* Sub meniuri, dar peste canvas */
+    pointer-events: none; /* Permite click prin spațiile goale */
+}
+
+/* Butoanele individuale */
+.control-btn, .shoot-btn {
+    pointer-events: auto; /* Reactivăm click-ul pe butoane */
+    background-color: rgba(255, 255, 255, 0.2); /* Transparent */
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    font-size: 24px;
+    border-radius: 50%; /* Rotunde */
+    width: 60px;
+    height: 60px;
+    margin: 5px;
+    touch-action: manipulation; /* Previne zoom-ul la dublu click */
+    user-select: none; /* Nu se poate selecta textul */
+    -webkit-user-select: none;
+}
+
+.control-btn:active, .shoot-btn:active {
+    background-color: rgba(255, 255, 255, 0.6); /* Mai vizibil când apeși */
+}
+
+/* Aranjare D-Pad (Stânga) */
+#dpad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dpad-row {
+    display: flex;
+}
+
+/* Aranjare Acțiuni (Dreapta) */
+#actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.shoot-btn {
+    width: 80px; /* Butonul de tragere mai mare */
+    height: 80px;
+    background-color: rgba(255, 0, 0, 0.3);
+    border-color: rgba(255, 0, 0, 0.6);
+    font-size: 30px;
+}
+
+/* Ascundem controalele pe PC (dacă au mouse) */
+@media (hover: hover) and (pointer: fine) {
+    #mobile-controls {
+        display: none;
+    }
+}
