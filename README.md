@@ -4,6 +4,12 @@ A lightweight remake of the classic arcade shooter built with **Vanilla JavaScri
 
 ## 🎮 [Play Live Demo](https://rzv12-09.github.io/asteroids-game)
 
+### ⌨️ Controls
+- **Arrow Keys (↑ ↓ ← →):** Move / Thrust
+- **Z:** Rotate Left
+- **C:** Rotate Right
+- **X:** Shoot
+
 ### ✨ Features
 - **Infinite Waves:** Difficulty increases as you clear asteroids.
 - **High Scores:** Top 5 scores saved via Local Storage.
